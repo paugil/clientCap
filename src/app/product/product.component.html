@@ -1,19 +1,20 @@
-<div class="col-md-12">
-     <div class="col-md-3 lesdeux">
-        <div class="lepremier">
-            <img [attr.src]="product?.logo"/>
+<div class="container col-md-10">
+    <div class="row">
+        <div class="col-md-4 lesdeux">
+            <div class="lepremier">
+                <img (click)="startFabrication()" class="product" [attr.src]="url+product?.logo"/>
+            </div>
+            <div class="lesecond">
+                <span  class="col-md-12" id="quantite">{{product?.quantite}}</span>
+            </div>
         </div>
-        <div class="lesecond">
-            <button type="button" class="btn btn-primary" id="multiplication">{{product?.quantite}}</button>
+        <div class="col-md-8 progress" #bar> </div>
+        <div class="col-md-4">
+            <span id="revenu">{{product?.revenu}}</span>
+        </div>
+        <div class="col-md-4">
+            <button type="button" class="btn btn-primary" id="multiplication">{{product?.cout}}</button>
         </div>
     </div>
-    <div class="col-md-9">
-        <span id="revenu">{{product?.revenu}}</span>
-    </div>
-    <div class="col-md-6">
-        <button type="button" class="btn btn-primary" id="multiplication">{{product?.cout}}</button>
-    </div>
-    <br>
-   
-  </div>
+</div>
 

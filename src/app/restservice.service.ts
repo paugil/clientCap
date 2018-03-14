@@ -34,5 +34,5 @@ export class RestserviceService {
     return this.http.get(this.server + "webresources/generic/world")
     .toPromise().then(response =>response.json()).catch(this.handleError);
   };
-   
+
 }

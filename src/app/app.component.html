@@ -9,7 +9,7 @@
     <span [innerHTML]="world.money | bigvalue"> </span>
 </div>
 <div class="col-md-4">
-    <button type="button" class="btn btn-primary" id="multiplication">Primary</button>
+    <button type="button" (click)="defQmulti()" class="btn btn-primary" id="commutateur">{{ this.qtmulti }}</button>
     <span>Your ID : </span>
     <span id="joueurID">XXXX</span>
     
@@ -24,18 +24,18 @@
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Investors">Investors</button>
 </div>
 <div class="col-md-10">
-    <app-product [prod]="world.products.product[0]" id="product"
-    class="col-md-6"></app-product>  
-    <app-product [prod]="world.products.product[1]" id="product"
-    class="col-md-6"></app-product>
-    <app-product [prod]="world.products.product[2]" id="product"
-    class="col-md-6"></app-product> 
-    <app-product [prod]="world.products.product[3]" id="product"
-    class="col-md-6"></app-product> 
-    <app-product [prod]="world.products.product[4]" id="product"
-    class="col-md-6"></app-product> 
-    <app-product [prod]="world.products.product[5]" id="product"
-    class="col-md-6"></app-product>   
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[0]" id="product" class="col-md-6"></app-product>  
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[1]" id="product" class="col-md-6"></app-product>
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[2]" id="product" class="col-md-6"></app-product> 
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[3]" id="product" class="col-md-6"></app-product> 
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[4]" id="product" class="col-md-6"></app-product> 
+    <app-product (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    [prod]="world.products.product[5]" id="product" class="col-md-6"></app-product>   
 </div>
 </div>
 </div>

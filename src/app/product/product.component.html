@@ -9,8 +9,9 @@
             </div>
         </div>
         <div class="col-md-8 progress" #bar> </div>
-        <div class="col-md-5">
-            <button type="button" class="btn btn-success btn-block" id="multiplication">{{product?.cout}}$</button>
+        <div class="col-md-5" >
+            <button (click)="onBuy()" ng-disabled="condition()" type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
+            <!-- Regler le problème du ng-disabled quand le cout du produit est supérieur à la money -->
         </div>
         <div class="col-md-3">
             <label id="time">{{product?.timeleft}}secondes</label>

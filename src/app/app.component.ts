@@ -29,6 +29,11 @@ export class AppComponent {
     this.world.score += p.revenu;
   }
 
+  onBuyDone(n : number){
+    this.world.money -= n;
+    this.world.score -= n;
+  }
+
   defQmulti(){
     if (this.qtmulti === "x1"){
       this.qtmulti = this.Tabmulti[1];

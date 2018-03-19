@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { RestserviceService } from './restservice.service';
 import { World, Product, Pallier } from './world';
 import { Http } from '@angular/http';
+import { ToasterModule, ToasterService } from 'angular2-toaster';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @Component({
   selector: 'app-root',
@@ -10,11 +13,13 @@ import { Http } from '@angular/http';
 })
 
 export class AppComponent {
+  // private tService;
   title = 'app';
   world: World = new World();
   server: string;
   Tabmulti = ["x1", "x10", "x100", "xMax"];
   qtmulti = this.Tabmulti[0];
+
  
 
   constructor(private service: RestserviceService) {
@@ -22,6 +27,7 @@ export class AppComponent {
     service.getWorld().then(world => { 
       this.world = world;
     });
+    // this.tService = toasterService;
   }
   
   onProductionDone(p : Product) {
@@ -32,6 +38,14 @@ export class AppComponent {
   onBuyDone(n : number){
     this.world.money -= n;
     this.world.score -= n;
+  }
+
+  hireManager(manager : Pallier){
+    this.world.money -= manager.seuil;
+    manager.unlocked = true;
+    this.world.products.product[(manager.idcible)-1].managerUnlocked = true;
+    // this.tService.pop('success', 'Manager hired !', manager.name);
+
   }
 
   defQmulti(){

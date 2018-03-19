@@ -10,11 +10,15 @@
         </div>
         <div class="col-md-8 progress" #bar> </div>
         <div class="col-md-5" >
-            <button (click)="onBuy()" ng-disabled="condition()" type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
-            <!-- Regler le problème du ng-disabled quand le cout du produit est supérieur à la money -->
-        </div>
+            <div *ngIf="coutProduct<=money">
+                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
+            </div>
+            <div *ngIf="coutProduct>money">
+                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
+            </div>
+         </div>
         <div class="col-md-3">
-            <label id="time">{{product?.timeleft}}secondes</label>
+            <label id="time">{{product?.timeleft}}millisecondes</label>
         </div>
         
     </div>

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
@@ -8,6 +9,7 @@ import { ProductComponent } from './product/product.component';
 import { RestserviceService } from './restservice.service';
 import { BigvaluePipe } from './bigvalue.pipe';
 import { ModalComponent } from './modal/modal.component';
+import { ToasterModule } from 'angular2-toaster';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { ModalComponent } from './modal/modal.component';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    BrowserAnimationsModule,
+    HttpModule,
+    ToasterModule
   ],
   providers: [RestserviceService],
   bootstrap: [AppComponent]

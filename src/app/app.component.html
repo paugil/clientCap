@@ -47,16 +47,23 @@
     </div>
     <div class="app-modal-body">
         <div class="col-xs-12" *ngFor="let manager of world.managers.pallier">
-            <div class="col-xs-4">
-                <img class="round" [attr.src]="server+manager.logo"/>
-            </div>
-            <div class="col-xs-4">
-                <h3>{{manager.name}}</h3>
-                <p>IDCIBLE</p>
-                <p>{{manager.seuil}}</p>
-            </div>
-            <div class="col-xs-4">
-                    <button type="button" class="col-xs-12 btn-lg btn-secondary" id="Hire">Hire !</button>
+            <div *ngIf="!manager.unlocked">
+                <div class="col-xs-4">
+                    <img class="round" [attr.src]="server+manager.logo"/>
+                </div>
+                <div class="col-xs-4">
+                    <h3>{{manager.name}}</h3>
+                    <p>{{world.products.product[(manager.idcible)-1].name}}</p>
+                    <p>{{manager.seuil}}$</p>
+                </div>
+                <div class="col-xs-4">
+                    <div *ngIf="manager.seuil<=world.money">
+                        <button (click)="hireManager(manager)" type="button" class="btn btn-success btn-block"> Hire ! </button>
+                    </div>
+                    <div *ngIf="manager.seuil>world.money">
+                        <button disabled type="button" class="btn btn-success btn-block" > Hire ! </button>
+                    </div>
+                </div>
             </div>
     
         </div>
@@ -66,4 +73,5 @@
    (click)="managersModal.hide()">Close</button>
     </div>
    </app-modal>
+   <!-- <toaster-container></toaster-container> -->
 </div>

@@ -25,8 +25,9 @@ export class ProductComponent implements OnInit {
   @Input()
   timeleft;
   lastupdate;
-  coutProduct : number;
+  coutProduct = 0;
   _qtmulti: string;
+  qMax=0;
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();  
   
@@ -53,28 +54,39 @@ export class ProductComponent implements OnInit {
     
   }
 
-  condition(){
-    console.log("test")
-    return true;
-  }
-
   startFabrication() {
     if(this.product.quantite>=1){
       this.etatProduc = 1;
       this.progressbar.animate(1, { duration: this.product.vitesse });
       this.progressbar.set(this.progress);
     } 
-    console.log(this.product.timeleft);
     this.timeleft = this.product.vitesse;
     this.lastupdate = Date.now()
   }
 
   onBuy() {
+    if(this._qtmulti==="x1")
+      this.product.quantite+=1;
+    if(this._qtmulti==="x10")
+      this.product.quantite+=10;
+    if(this._qtmulti==="x100")
+      this.product.quantite+=100;
+    if(this._qtmulti==="xMax")
+      this.product.quantite+=this.qMax;
     this.notifyAchat.emit(this.coutProduct);
   }
 
   calcScore(): any {
-    if(this.timeleft <= 0){
+    if(this.product.managerUnlocked){
+      this.startFabrication();
+      // this.timeleft = 0;
+      this.progressbar.set(0);  
+      this.notifyProduction.emit(this.product);
+    }
+
+
+
+    if(this.timeleft <= 0 && this.product.managerUnlocked==false){
       this.timeleft = 0;
       this.progressbar.set(0);  
       if (this.etatProduc == 1){
@@ -84,6 +96,7 @@ export class ProductComponent implements OnInit {
     } else {
       this.timeleft = Date.now() - this.lastupdate - this.timeleft;
     }
+   
   }
 
   @Input()
@@ -104,12 +117,10 @@ export class ProductComponent implements OnInit {
       this.coutProduct = this.product.cout * ((1-this.product.croissance ** (100+1))/(1-this.product.croissance))
     };
     if(this._qtmulti === "xMax"){
-    //en fonction de la valeur _qtmulti on calcule le cout de l'achat, penser à afficher la valeur pour le parent
-      var qMax = 0;
-      while (this.money > this.product.cout * ((1-this.product.croissance ** (qMax+1))/(1-this.product.croissance))){
-        qMax += 1 ;
+      while (this.money > this.product.cout * ((1-this.product.croissance ** (this.qMax+1))/(1-this.product.croissance))){
+        this.qMax += 1 ;
       }
-      this.coutProduct = this.coutProduct = this.product.cout * ((1-this.product.croissance ** (qMax+1))/(1-this.product.croissance))
+      this.coutProduct = this.coutProduct = this.product.cout * ((1-this.product.croissance ** (this.qMax+1))/(1-this.product.croissance))
     }
 }
 

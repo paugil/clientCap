@@ -82,11 +82,11 @@ export class ProductComponent implements OnInit {
 
   calcMaxCanBuy(): any {
     //en fonction de la valeur _qtmulti on calcule le cout de l'achat, penser à afficher la valeur pour le parent
-    var qMax = 0;
-    while (this.money > this.prod.cout * ((1-this.prod.croissance ** (qMax+1))/(1-this.prod.croissance))){
-      qMax += 1 ;
-    }
-    console.log(qMax)
+    //var qMax = 0;
+    //while (this.money > this.prod.cout * ((1-this.prod.croissance ** (qMax+1))/(1-this.prod.croissance))){
+      //qMax += 1 ;
+    //}
+   // console.log(qMax)
   }
 
 }

@@ -1,15 +1,19 @@
 <body>
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-4">
+<div class="col-md-5">
+<br>
   <img class="round" [attr.src]="server+world.logo"/>
   <span id="worldname">{{world.name}}</span>
 </div>
-<div class="col-md-4">
-    <span [innerHTML]="world.money | bigvalue"> </span>
+<div class="col-md-3">
+<br>
+    <span id="worldmoney" [innerHTML]="world.money | bigvalue"></span>
+    <span> $ </span>
 </div>
-<div class="col-md-4">
-    <button type="button" (click)="defQmulti()" class="btn btn-primary" id="commutateur">{{ this.qtmulti }}</button>
+<div class="col-md-2">
+<br>
+    <button type="button" (click)="defQmulti()" class="btn btn-success" id="commutateur">{{ this.qtmulti }}</button>
     <span>Your ID : </span>
     <span id="joueurID">XXXX</span>
     

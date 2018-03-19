@@ -1,6 +1,6 @@
 .round {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     border-color: black
 }
@@ -21,12 +21,13 @@
 }
 
 body {
-    background-color: #2E2E2E;
+    background-color: rgb(114, 106, 106);
 }
 
 #worldname {
-    color : white;
-    font-size: 50px
+    color : rgb(0, 0, 0);
+    font-size: 60px;
+    font-family: Brush Script MT, Brush Script Std, cursive;
 }
 
 .menu {
@@ -47,4 +48,10 @@ span{
     border-radius: 10%;
     text-align: center
 
+}
+
+#worldmoney {
+    color : rgb(255, 255, 255);
+    font-size: 30px;
+    text-align: center
 }

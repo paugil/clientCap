@@ -10,11 +10,11 @@
         </div>
         <div class="col-md-8 progress" #bar> </div>
         <div class="col-md-5" >
-            <div *ngIf="coutProduct<=money">
-                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
+            <div *ngIf="coutProduct<=money && qMax>0">
+                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication">x{{this.qMax}} | {{this.coutProduct | bigvalue}}$</button>
             </div>
-            <div *ngIf="coutProduct>money">
-                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication">{{this._qtmulti}} | {{this.coutProduct | bigvalue}}$</button>
+            <div *ngIf="coutProduct>money || qMax==0">
+                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication">x{{this.qMax}} | {{this.coutProduct | bigvalue}}$</button>
             </div>
          </div>
         <div class="col-md-3">

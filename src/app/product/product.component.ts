@@ -27,7 +27,7 @@ export class ProductComponent implements OnInit {
   lastupdate;
   coutProduct = 0;
   _qtmulti: string;
-  qMax=0;
+  qMax=1;
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();  
   
@@ -49,7 +49,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit() {
     this.progressbar = new this.ProgressBar.Line(this.progressBarItem.nativeElement, 
-      { strokeWidth: 50, color:'#00ff00' });
+      { strokeWidth: 50, color:'green' });
     setInterval(() => { this.calcScore(); }, 100);
     
   }
@@ -73,7 +73,7 @@ export class ProductComponent implements OnInit {
       this.product.quantite+=100;
     if(this._qtmulti==="xMax")
       this.product.quantite+=this.qMax;
-    this.notifyAchat.emit(this.coutProduct);
+    this.notifyAchat.emit(this.coutProduct);   
   }
 
   calcScore(): any {
@@ -109,19 +109,23 @@ export class ProductComponent implements OnInit {
   calcMaxCanBuy(): any {
     if(this._qtmulti === "x1"){
       this.coutProduct = this.product.cout
+      this.qMax = 1;
     };
     if(this._qtmulti === "x10"){
       this.coutProduct = this.product.cout * ((1-this.product.croissance ** (10+1))/(1-this.product.croissance))
+      this.qMax = 10;
     };
     if(this._qtmulti === "x100"){
       this.coutProduct = this.product.cout * ((1-this.product.croissance ** (100+1))/(1-this.product.croissance))
+      this.qMax = 100;
     };
     if(this._qtmulti === "xMax"){
-      while (this.money > this.product.cout * ((1-this.product.croissance ** (this.qMax+1))/(1-this.product.croissance))){
-        this.qMax += 1 ;
-      }
-      this.coutProduct = this.coutProduct = this.product.cout * ((1-this.product.croissance ** (this.qMax+1))/(1-this.product.croissance))
+      this.qMax = (Math.log(1-(this.money/this.product.cout)*(1-this.product.croissance))/(Math.log(this.product.croissance)));
+      this.qMax = (Math.trunc(this.qMax));
+      this.coutProduct = (this.product.cout * (1- Math.pow(this.product.croissance, this.qMax))) /(1-this.product.croissance)
+      console.log(this.coutProduct)
     }
+    this.coutProduct = Math.trunc(this.coutProduct)
 }
 
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RestserviceService } from './restservice.service';
 import { World, Product, Pallier } from './world';
 import { Http } from '@angular/http';
-import { ToasterModule, ToasterService } from 'angular2-toaster';
+import { ToasterModule, ToasterService, ToasterContainerComponent } from 'angular5-toaster';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
@@ -13,39 +13,53 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 })
 
 export class AppComponent {
-  // private tService;
+  tService;
   title = 'app';
   world: World = new World();
   server: string;
   Tabmulti = ["x1", "x10", "x100", "xMax"];
   qtmulti = this.Tabmulti[0];
+  badgeManager = "";
 
  
 
-  constructor(private service: RestserviceService) {
+  constructor(private service: RestserviceService, private toasterService : ToasterService) {
     this.server = service.getServer();
     service.getWorld().then(world => { 
       this.world = world;
+      this.tService = toasterService;
+      this.viewBadge();
     });
-    // this.tService = toasterService;
+    
+    
   }
   
   onProductionDone(p : Product) {
     this.world.money += p.revenu;
     this.world.score += p.revenu;
+    this.viewBadge();
   }
 
   onBuyDone(n : number){
     this.world.money -= n;
     this.world.score -= n;
+    this.viewBadge();
   }
 
   hireManager(manager : Pallier){
     this.world.money -= manager.seuil;
     manager.unlocked = true;
     this.world.products.product[(manager.idcible)-1].managerUnlocked = true;
-    // this.tService.pop('success', 'Manager hired !', manager.name);
+    this.tService.pop('success', 'Manager hired !', manager.name);
+    this.viewBadge();
+  }
 
+  viewBadge(){
+    this.badgeManager="";
+    for (let manager of this.world.managers.pallier) {
+      if(this.world.money>= manager.seuil && manager.unlocked === false)
+        this.badgeManager = "New";
+    }
   }
 
   defQmulti(){

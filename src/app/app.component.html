@@ -23,7 +23,7 @@
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Unlocks">Unlocks</button>
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Cash_Upgrades">Cash Upgrades</button>
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Angels_Upgrades">Angels Upgrades</button>
-    <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="managersModal.show()" id="Managers">Managers</button>
+    <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="managersModal.show()" id="Managers"><span class="badge">{{badgeManager}}</span> Managers</button>
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Investors">Investors</button>
 </div>
 <div class="col-md-10">
@@ -73,5 +73,5 @@
    (click)="managersModal.hide()">Close</button>
     </div>
    </app-modal>
-   <!-- <toaster-container></toaster-container> -->
+   <toaster-container></toaster-container>
 </div>

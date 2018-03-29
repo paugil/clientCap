@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { World, Pallier, Product } from '../world';
 import { RestserviceService } from '../restservice.service';
+
 declare var require: any;
 
 @Component({
@@ -11,121 +12,111 @@ declare var require: any;
 })
 
 export class ProductComponent implements OnInit {
- 
- 
+
   @ViewChild('bar') progressBarItem
 
   ProgressBar = require("progressbar.js");
-  progressbar : any;
-  progress = 1;
-  url : String;
-  product : Product;
-  money : number;
-  etatProduc = 0;
-  @Input()
-  timeleft;
-  lastupdate;
+  progressbar: any;
+  url: String;
+  product: Product;
+  money: number;
+  qMax = 1;
+  lastupdate: any
   coutProduct = 0;
   _qtmulti: string;
-  qMax=1;
+
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
-  @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();  
-  
+  @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
+
   @Input()
-  set prod(value : Product){
+  set prod(value: Product) {
     this.product = value;
-    if(this.product)
+    if (this.product)
       this.coutProduct = this.product.cout
   }
 
   @Input()
-  set worldMoney(value : number){
+  set worldMoney(value: number) {
     this.money = value;
+    this.calcMaxCanBuy();
   }
 
-  constructor(private service : RestserviceService) { 
+  constructor(private service: RestserviceService) {
     this.url = service.getServer();
   }
 
   ngOnInit() {
-    this.progressbar = new this.ProgressBar.Line(this.progressBarItem.nativeElement, 
-      { strokeWidth: 50, color:'green' });
+    this.progressbar = new this.ProgressBar.Line(this.progressBarItem.nativeElement, { strokeWidth: 100, color: 'green' });
     setInterval(() => { this.calcScore(); }, 100);
-    
   }
 
   startFabrication() {
-    if(this.product.quantite>=1){
-      this.etatProduc = 1;
-      this.progressbar.animate(1, { duration: this.product.vitesse });
-      this.progressbar.set(this.progress);
-    } 
-    this.timeleft = this.product.vitesse;
-    this.lastupdate = Date.now()
+    if (this.product.timeleft == 0) {
+      if (this.product.quantite >= 1) {
+        this.product.timeleft = this.product.vitesse;
+        this.lastupdate = Date.now(); //instant de démarrage de la prod
+        this.progressbar.animate(1, { duration: this.product.vitesse });
+      }
+    }
   }
 
   onBuy() {
-    if(this._qtmulti==="x1")
-      this.product.quantite+=1;
-    if(this._qtmulti==="x10")
-      this.product.quantite+=10;
-    if(this._qtmulti==="x100")
-      this.product.quantite+=100;
-    if(this._qtmulti==="xMax")
-      this.product.quantite+=this.qMax;
-    this.notifyAchat.emit(this.coutProduct);   
+    if (this._qtmulti === "x1")
+      this.product.quantite += 1;
+    if (this._qtmulti === "x10")
+      this.product.quantite += 10;
+    if (this._qtmulti === "x100")
+      this.product.quantite += 100;
+    if (this._qtmulti === "xMax")
+      this.product.quantite += this.qMax;
+    this.notifyAchat.emit(this.coutProduct);
+
   }
 
   calcScore(): any {
-    if(this.product.managerUnlocked){
-      this.startFabrication();
-      // this.timeleft = 0;
-      this.progressbar.set(0);  
-      this.notifyProduction.emit(this.product);
-    }
 
-
-
-    if(this.timeleft <= 0 && this.product.managerUnlocked==false){
-      this.timeleft = 0;
-      this.progressbar.set(0);  
-      if (this.etatProduc == 1){
+    if (this.product.timeleft != 0) {
+      this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+      this.lastupdate = Date.now();
+      if ( this.product.timeleft <= 0) {
+        this.product.timeleft = 0;
+        this.progressbar.set(0);
         this.notifyProduction.emit(this.product);
-        this.etatProduc = 2;
       }
-    } else {
-      this.timeleft = Date.now() - this.lastupdate - this.timeleft;
+      this.calcMaxCanBuy();
     }
-   
+    if (this.product.managerUnlocked == true) {
+      this.startFabrication();
+    }
   }
 
   @Input()
   set qtmulti(value: string) {
     this._qtmulti = value;
-    if (this._qtmulti && this.product) 
-        this.calcMaxCanBuy();
+    if (this._qtmulti && this.product)
+      this.calcMaxCanBuy();
   }
 
   calcMaxCanBuy(): any {
-    if(this._qtmulti === "x1"){
-      this.coutProduct = this.product.cout
+    if (this._qtmulti === "x1") {
+      this.coutProduct = (this.product.cout * this.product.croissance) + this.product.cout;
       this.qMax = 1;
     };
-    if(this._qtmulti === "x10"){
-      this.coutProduct = this.product.cout * ((1-this.product.croissance ** (10+1))/(1-this.product.croissance))
+    if (this._qtmulti === "x10") {
+      this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (10 + 1)) / (1 - this.product.croissance))
       this.qMax = 10;
     };
-    if(this._qtmulti === "x100"){
-      this.coutProduct = this.product.cout * ((1-this.product.croissance ** (100+1))/(1-this.product.croissance))
+    if (this._qtmulti === "x100") {
+      this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (100 + 1)) / (1 - this.product.croissance))
       this.qMax = 100;
     };
-    if(this._qtmulti === "xMax"){
-      this.qMax = (Math.log(1-(this.money/this.product.cout)*(1-this.product.croissance))/(Math.log(this.product.croissance)));
+    if (this._qtmulti === "xMax") {
+      this.qMax = (Math.log(1 - (this.money / this.product.cout) * (1 - this.product.croissance)) / (Math.log(this.product.croissance)));
       this.qMax = (Math.trunc(this.qMax));
-      this.coutProduct = (this.product.cout * (1- Math.pow(this.product.croissance, this.qMax))) /(1-this.product.croissance)
+      this.coutProduct = (this.product.cout * (1 - Math.pow(this.product.croissance, this.qMax))) / (1 - this.product.croissance)
       console.log(this.coutProduct)
     }
     this.coutProduct = Math.trunc(this.coutProduct)
-}
+  }
 
 }

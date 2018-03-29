@@ -21,7 +21,9 @@
 }
 
 body {
-    background-color: rgb(114, 106, 106);
+    background-repeat: no-repeat;
+    background-size : cover;
+    background-image: url("https://is.ambafrance.org/IMG/jpg/paris-3-2.jpg?2874/88447529a6a461dec28757029fc5e93b7471b048");
 }
 
 #worldname {
@@ -54,4 +56,8 @@ span{
     color : rgb(255, 255, 255);
     font-size: 30px;
     text-align: center
+}
+
+.progress {
+    padding : 0 0 !important;
 }

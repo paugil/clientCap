@@ -4,7 +4,8 @@ import { World, Product, Pallier } from './world';
 import { Http } from '@angular/http';
 import { ToasterModule, ToasterService, ToasterContainerComponent } from 'angular5-toaster';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -20,15 +21,24 @@ export class AppComponent {
   Tabmulti = ["x1", "x10", "x100", "xMax"];
   qtmulti = this.Tabmulti[0];
   badgeManager = "";
+  username : string;
+  serviceRest;
 
  
 
   constructor(private service: RestserviceService, private toasterService : ToasterService) {
+    this.serviceRest = service;
     this.server = service.getServer();
     service.getWorld().then(world => { 
       this.world = world;
       this.tService = toasterService;
       this.viewBadge();
+      if(localStorage.getItem("username")){
+        this.username = localStorage.getItem("username")
+      }else{
+        this.username = "France" + Math.floor(Math.random() * 10000);
+      }
+        
     });
     
     
@@ -74,5 +84,9 @@ export class AppComponent {
     }
   }
 
+  onUsernameChanged(){
+    localStorage.setItem("username", this.username);
+    this.serviceRest.setUser(this.username);
+  }
  
 }

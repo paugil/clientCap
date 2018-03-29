@@ -9,18 +9,18 @@
             </div>
         </div>
         <div class="col-md-8 progress" #bar> </div>
-        <div class="col-md-5" >
-            <div *ngIf="coutProduct<=money && qMax>0">
-                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication">x{{this.qMax}} | {{this.coutProduct | bigvalue}}$</button>
-            </div>
-            <div *ngIf="coutProduct>money || qMax==0">
-                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication">x{{this.qMax}} | {{this.coutProduct | bigvalue}}$</button>
-            </div>
-         </div>
-        <div class="col-md-3">
-            <label id="time">{{product?.timeleft}}millisecondes</label>
-        </div>
-        
-    </div>
-</div>
 
+        <div class="col-md-8 col-md-offset-4" style="z-index:1; position:absolute; text-align:center">{{product?.revenu}}</div>
+        <div class="col-md-5">
+        <div *ngIf="coutProduct<=money && qMax>0" >
+                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
+            </div>
+            <div *ngIf="coutProduct>money || qMax==0" >
+                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
+            </div>
+         
+         </div>
+        <div class="col-md-3" id="timeleft"> {{((product.timeleft/3600)/1000).toFixed(0)}} : {{((product.timeleft/60)/1000).toFixed(0)}} : {{ (product.timeleft/1000).toFixed(0) }}
+        </div>
+        </div>
+    </div>

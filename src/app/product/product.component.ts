@@ -99,7 +99,7 @@ export class ProductComponent implements OnInit {
 
   calcMaxCanBuy(): any {
     if (this._qtmulti === "x1") {
-      this.coutProduct = (this.product.cout * this.product.croissance) + this.product.cout;
+      this.coutProduct = (this.product.cout * this.product.croissance) ;
       this.qMax = 1;
     };
     if (this._qtmulti === "x10") {
@@ -114,9 +114,7 @@ export class ProductComponent implements OnInit {
       this.qMax = (Math.log(1 - (this.money / this.product.cout) * (1 - this.product.croissance)) / (Math.log(this.product.croissance)));
       this.qMax = (Math.trunc(this.qMax));
       this.coutProduct = (this.product.cout * (1 - Math.pow(this.product.croissance, this.qMax))) / (1 - this.product.croissance)
-      console.log(this.coutProduct)
     }
-    this.coutProduct = Math.trunc(this.coutProduct)
   }
 
 }

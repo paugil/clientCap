@@ -57,20 +57,22 @@
                     <p>{{manager.seuil}}$</p>
                 </div>
                 <div class="col-xs-4">
-                    <div *ngIf="manager.seuil<=world.money">
+
+                    <div *ngIf="manager.seuil<=world.money" >
                         <button (click)="hireManager(manager)" type="button" class="btn btn-success btn-block"> Hire ! </button>
                     </div>
+
                     <div *ngIf="manager.seuil>world.money">
                         <button disabled type="button" class="btn btn-success btn-block" > Hire ! </button>
                     </div>
+
                 </div>
             </div>
     
         </div>
     </div>
     <div class="app-modal-footer">
-    <button type="button" class="btn btn-default"
-   (click)="managersModal.hide()">Close</button>
+    <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
     </div>
    </app-modal>
    <toaster-container></toaster-container>

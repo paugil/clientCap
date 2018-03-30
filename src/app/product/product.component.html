@@ -20,7 +20,8 @@
             </div>
          
          </div>
-        <div class="col-md-3" id="timeleft"> {{((product.timeleft/3600)/1000).toFixed(0)}} : {{((product.timeleft/60)/1000).toFixed(0)}} : {{ (product.timeleft/1000).toFixed(0) }}
-        </div>
+
+        <div class="col-md-3" id="timeleft" > {{ product?.timeleft | date:'mm:ss' }} </div>
+
         </div>
     </div>

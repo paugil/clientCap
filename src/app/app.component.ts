@@ -43,10 +43,11 @@ export class AppComponent {
     
     
   }
+
   
   onProductionDone(p : Product) {
-    this.world.money += p.revenu;
-    this.world.score += p.revenu;
+    this.world.money += (p.revenu)*(p.quantite);
+    this.world.score += (p.revenu)*(p.quantite);
     this.viewBadge();
   }
 

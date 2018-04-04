@@ -63,6 +63,7 @@ export class ProductComponent implements OnInit {
   onBuy() {
     if (this._qtmulti === "x1")
       this.product.quantite += 1;
+      this.product.cout= this.product.cout + (this.product.cout * this.product.croissance);
     if (this._qtmulti === "x10")
       this.product.quantite += 10;
     if (this._qtmulti === "x100")

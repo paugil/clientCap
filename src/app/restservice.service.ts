@@ -10,7 +10,7 @@ export class RestserviceService {
 
   constructor(private http:Http) { 
     this.server = "http://localhost:8080/serveurCap/";
-    this.user = " ";
+    this.user = null;
   }
 
   getUser() : string {
@@ -35,9 +35,19 @@ export class RestserviceService {
     .toPromise().then(response =>response.json()).catch(this.handleError);
   }
 
+  putManager(manager : Pallier) : Promise<Response> {
+    return this.http.put(this.server + "webresources/generic/manager", manager, {headers: this.setHeaders(this.user)})
+    .toPromise();
+  }
+
+  putProduct(product : Product) : Promise<Response> {
+    return this.http.put(this.server + "webresources/generic/product", product, {headers: this.setHeaders(this.user)})
+    .toPromise();
+  }
+
   private setHeaders(user : string) : Headers {
     var headers = new Headers();
-    headers.append("X-User", user);
+    headers.append("X-User", user);   
     return headers;
   }
 

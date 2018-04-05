@@ -49,6 +49,7 @@ export class AppComponent {
     this.world.money += (p.revenu)*(p.quantite);
     this.world.score += (p.revenu)*(p.quantite);
     this.viewBadge();
+    this.serviceRest.putProduct(p);
   }
 
   onBuyDone(n : number){
@@ -88,6 +89,7 @@ export class AppComponent {
   onUsernameChanged(){
     localStorage.setItem("username", this.username);
     this.serviceRest.setUser(this.username);
+    this.serviceRest.getWorld();
   }
  
 }

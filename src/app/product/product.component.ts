@@ -24,6 +24,7 @@ export class ProductComponent implements OnInit {
   lastupdate: any
   coutProduct = 0;
   _qtmulti: string;
+  serviceRest;
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
@@ -42,6 +43,7 @@ export class ProductComponent implements OnInit {
   }
 
   constructor(private service: RestserviceService) {
+    this.serviceRest=service;
     this.url = service.getServer();
   }
 
@@ -70,6 +72,7 @@ export class ProductComponent implements OnInit {
       this.product.quantite += 100;
     if (this._qtmulti === "xMax")
       this.product.quantite += this.qMax;
+    this.serviceRest.putProduct(this.product);
     this.notifyAchat.emit(this.coutProduct);
 
   }

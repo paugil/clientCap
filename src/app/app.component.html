@@ -27,7 +27,7 @@
     <button type="button" class="col-md-12 btn-lg btn-secondary" id="Investors">Investors</button>
 </div>
 <div class="col-md-10">
-    <app-product (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
+    <app-product (notifyProduct)="onBuyDone($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
     [prod]="world.products.product[0]" id="product" class="col-md-6"></app-product>  
     <app-product (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
     [prod]="world.products.product[1]" id="product" class="col-md-6"></app-product>

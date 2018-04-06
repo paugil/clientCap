@@ -49,13 +49,14 @@ export class AppComponent {
     this.world.money += (p.revenu)*(p.quantite);
     this.world.score += (p.revenu)*(p.quantite);
     this.viewBadge();
-    this.serviceRest.putProduct(p);
+    this.service.putProduct(p);
   }
 
-  onBuyDone(n : number){
+  onBuyDone(n : number, p : Product){
     this.world.money -= n;
     this.world.score -= n;
     this.viewBadge();
+    this.service.putProduct(p);
   }
 
   hireManager(manager : Pallier){
@@ -64,6 +65,7 @@ export class AppComponent {
     this.world.products.product[(manager.idcible)-1].managerUnlocked = true;
     this.tService.pop('success', 'Manager hired !', manager.name);
     this.viewBadge();
+    this.service.putManager(manager);
   }
 
   viewBadge(){

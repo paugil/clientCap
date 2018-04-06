@@ -28,6 +28,7 @@ export class ProductComponent implements OnInit {
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
+  @Output() notifyProduct: EventEmitter<Product> = new EventEmitter<Product>();
 
   @Input()
   set prod(value: Product) {
@@ -43,7 +44,7 @@ export class ProductComponent implements OnInit {
   }
 
   constructor(private service: RestserviceService) {
-    this.serviceRest=service;
+    //this.serviceRest=service;
     this.url = service.getServer();
   }
 
@@ -65,15 +66,16 @@ export class ProductComponent implements OnInit {
   onBuy() {
     if (this._qtmulti === "x1")
       this.product.quantite += 1;
-      this.product.cout= this.product.cout + (this.product.cout * this.product.croissance);
+      this.product.cout = this.coutProduct;
     if (this._qtmulti === "x10")
       this.product.quantite += 10;
     if (this._qtmulti === "x100")
       this.product.quantite += 100;
     if (this._qtmulti === "xMax")
       this.product.quantite += this.qMax;
-    this.serviceRest.putProduct(this.product);
+    //this.serviceRest.putProduct(this.product);
     this.notifyAchat.emit(this.coutProduct);
+    this.notifyProduct.emit(this.product);
 
   }
 

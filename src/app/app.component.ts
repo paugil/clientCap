@@ -52,10 +52,13 @@ export class AppComponent {
     this.service.putProduct(p);
   }
 
-  onBuyDone(n : number, p : Product){
+  onBuyDone(n : number){
     this.world.money -= n;
     this.world.score -= n;
     this.viewBadge();
+  }
+  
+  onBuyProduct(p: Product){
     this.service.putProduct(p);
   }
 

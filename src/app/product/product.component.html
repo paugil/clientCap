@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-8 progress" #bar> </div>
 
-        <div class="col-md-8 col-md-offset-4" style="z-index:1; position:absolute; text-align:center">{{product.revenu*product.quantite}}</div>
+        <div class="col-md-8 col-md-offset-4" style="z-index:1; position:absolute; text-align:center">{{product?.revenu*product?.quantite}}</div>
         <div class="col-md-5">
         <div *ngIf="coutProduct<=money && qMax>0" >
                     <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>

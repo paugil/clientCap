@@ -30,25 +30,48 @@ export class RestserviceService {
     return Promise.reject(error.message || error);
   }
 
+  private setHeaders(user : string) : Headers {
+    var headers = new Headers();
+    headers.append("X-User", user);   
+    return headers;
+  }
+
   getWorld(): Promise<World> {
     return this.http.get(this.server + "webresources/generic/world", {headers: this.setHeaders(this.user)})
     .toPromise().then(response =>response.json()).catch(this.handleError);
   }
 
   putManager(manager : Pallier) : Promise<Response> {
+    console.log("put manager");
+    console.log(manager);
     return this.http.put(this.server + "webresources/generic/manager", manager, {headers: this.setHeaders(this.user)})
     .toPromise();
   }
 
   putProduct(product : Product) : Promise<Response> {
+    console.log("put produit");
+    console.log(product);
     return this.http.put(this.server + "webresources/generic/product", product, {headers: this.setHeaders(this.user)})
     .toPromise();
   }
-
-  private setHeaders(user : string) : Headers {
-    var headers = new Headers();
-    headers.append("X-User", user);   
-    return headers;
+  putAngel(angel : Pallier) : Promise<Response> {
+    console.log("put angel");
+    console.log(angel);
+    return this.http.put(this.server + "webresources/generic/angel", angel, {headers: this.setHeaders(this.user)})
+    .toPromise();
   }
+  putUpgrade(upgrade : Pallier) : Promise<Response> {
+    console.log("put upgrade");
+    console.log(upgrade);
+    return this.http.put(this.server + "webresources/generic/upgrade", upgrade, {headers: this.setHeaders(this.user)})
+    .toPromise();
+  }
+  putReset (world : World) : Promise<Response> {
+    console.log("put reset");
+    console.log(world);
+    return this.http.put(this.server + "webresources/generic/reset", world, {headers: this.setHeaders(this.user)})
+    .toPromise();
+  }
+  
 
 }

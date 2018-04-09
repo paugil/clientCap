@@ -28,6 +28,7 @@ export class AppComponent {
   serviceRest;
   unlocksProduct = [];
   nbAngels = 0;
+  bonusvitesse = [];
 
   constructor(private service: RestserviceService, private toasterService : ToasterService) {
     this.serviceRest = service;
@@ -94,10 +95,10 @@ export class AppComponent {
     if(upgrade.idcible==0){
       this.world.products.product.forEach(product=>{
         if(upgrade.typeratio=='GAIN'){
-          product[(upgrade.idcible)-1].revenu = product[(upgrade.idcible)-1].revenu * upgrade.ratio * product[(upgrade.idcible)-1].quantite;
+          product.revenu = product.revenu * upgrade.ratio * product.quantite;
         }
         if(upgrade.typeratio=='VITESSE'){
-          product[upgrade.idcible-1].vitesse = product[upgrade.idcible-1].vitesse / upgrade.ratio;
+          product.vitesse = product.vitesse / upgrade.ratio;
         }
       })
     }
@@ -123,15 +124,15 @@ export class AppComponent {
     if(angel.idcible==0){
       this.world.products.product.forEach(product=>{
         if(angel.typeratio=='GAIN'){
-          product[(angel.idcible)-1].revenu = product[(angel.idcible)-1].revenu * angel.ratio * product[(angel.idcible)-1].quantite;
+          product.revenu = product.revenu * angel.ratio * product.quantite;
         }
         if(angel.typeratio=='VITESSE'){
-          product[angel.idcible-1].vitesse = product[angel.idcible-1].vitesse / angel.ratio;
+          product.vitesse = product.vitesse / angel.ratio;
         }
       })
     }
     if(angel.idcible==-1){
-      this.world.angelbonus += 0.02 ; 
+      this.world.angelbonus += angel.ratio ; 
     }
     this.tService.pop('success', 'Angel buy !', angel.name);
     this.viewBadge();
@@ -178,7 +179,6 @@ export class AppComponent {
 
   calcNbAnge(){
     this.nbAngels = Math.floor(150 * Math.sqrt(this.world.score / Math.pow(10, 5))) - this.world.totalangels;
-    console.log(this.nbAngels);
   }
 
   viewBadge(){

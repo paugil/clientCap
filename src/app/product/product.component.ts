@@ -26,28 +26,17 @@ export class ProductComponent implements OnInit {
   coutProduct = 0;
   _qtmulti: string;
   unlockUnlocked = [];
+  vitesseIni: number;
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
   @Output() notifyProduct: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() unlockProduct: EventEmitter<any> = new EventEmitter();
 
-  // @Input()
-  // set prod(value: Product) {
-  //   this.product = value;
-  //   if (this.product && this.product.timeleft > 0) {
-  //     this.lastupdate = Date.now();
-  //     let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-  //     this.progressbar.set(progress);
-  //     this.coutProduct = this.product.cout
-  //     this.progressbar.animate(1, { duration: this.product.timeleft });
-  //   }
-
-  // }
-
   @Input()
   set prod(value: Product) {
     this.product = value;
+    this.vitesseIni = this.product.vitesse;
     this.checkUnlocks();
     if (this.product && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
@@ -55,9 +44,7 @@ export class ProductComponent implements OnInit {
         this.product.vitesse;
       this.progressbar.set(progress);
       this.progressbar.animate(1, { duration: this.product.timeleft });
-      
     }
-    
   }
 
   @Input()
@@ -81,7 +68,6 @@ export class ProductComponent implements OnInit {
         this.product.timeleft = this.product.vitesse;
         this.lastupdate = Date.now(); //instant de démarrage de la prod
         this.progressbar.animate(1, { duration: this.product.vitesse });
-
       }
     }
   }
@@ -109,14 +95,21 @@ export class ProductComponent implements OnInit {
 
   calcScore(): any {
     if (this.product.timeleft != 0) {
-      this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
-      this.lastupdate = Date.now();
-      if (this.product.timeleft <= 0) {
-        this.product.timeleft = 0;
-        this.progressbar.set(0);
-        this.notifyProduction.emit(this.product);
+      if(this.vitesseIni != this.product.vitesse){
+        this.vitesseIni = this.product.vitesse;
+        this.product.timeleft = this.product.timeleft / this.product.vitesse;
+        this.progressbar.animate(1, { duration: this.product.timeleft });
+      }else{
+        this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+        this.lastupdate = Date.now();
+        if (this.product.timeleft <= 0) {
+          this.product.timeleft = 0;
+          this.progressbar.set(0);
+          this.notifyProduction.emit(this.product);
+        }
+        this.calcMaxCanBuy();
       }
-      this.calcMaxCanBuy();
+      
     }
     if (this.product.managerUnlocked == true) {
       this.startFabrication();
@@ -131,22 +124,26 @@ export class ProductComponent implements OnInit {
   }
 
   calcMaxCanBuy(): any {
-    if (this._qtmulti === "x1") {
-      this.coutProduct = (this.product.cout * this.product.croissance);
-      this.qMax = 1;
-    };
-    if (this._qtmulti === "x10") {
-      this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (10 + 1)) / (1 - this.product.croissance))
-      this.qMax = 10;
-    };
-    if (this._qtmulti === "x100") {
-      this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (100 + 1)) / (1 - this.product.croissance))
-      this.qMax = 100;
-    };
-    if (this._qtmulti === "xMax") {
-      this.qMax = (Math.log(1 - (this.money / this.product.cout) * (1 - this.product.croissance)) / (Math.log(this.product.croissance)));
-      this.qMax = (Math.trunc(this.qMax));
-      this.coutProduct = (this.product.cout * (1 - Math.pow(this.product.croissance, this.qMax))) / (1 - this.product.croissance)
+    if(this.product.quantite==0){
+      this.coutProduct = this.product.cout;
+    }else{
+      if (this._qtmulti === "x1") {
+        this.coutProduct = (this.product.cout * this.product.croissance);
+        this.qMax = 1;
+      };
+      if (this._qtmulti === "x10") {
+        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (10 + 1)) / (1 - this.product.croissance))
+        this.qMax = 10;
+      };
+      if (this._qtmulti === "x100") {
+        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (100 + 1)) / (1 - this.product.croissance))
+        this.qMax = 100;
+      };
+      if (this._qtmulti === "xMax") {
+        this.qMax = (Math.log(1 - (this.money / this.product.cout) * (1 - this.product.croissance)) / (Math.log(this.product.croissance)));
+        this.qMax = (Math.trunc(this.qMax));
+        this.coutProduct = (this.product.cout * (1 - Math.pow(this.product.croissance, this.qMax))) / (1 - this.product.croissance)
+      }
     }
   }
 

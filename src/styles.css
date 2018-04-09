@@ -17,13 +17,19 @@
 }
 
 #product{
-    margin-top: 50px;
+    margin-top: 40px;
+    /* background-image: url("fond1.jpg"); */
+    background-color: #527a7a;
+    border-radius: 2%;
+    height: 120px;
+    padding-top: 20px;
 }
 
 body {
     background-repeat: no-repeat;
     background-size : cover;
-    background-image: url("https://is.ambafrance.org/IMG/jpg/paris-3-2.jpg?2874/88447529a6a461dec28757029fc5e93b7471b048");
+    background-image: url("fond.jpg");
+    /* background-image: url("https://is.ambafrance.org/IMG/jpg/paris-3-2.jpg?2874/88447529a6a461dec28757029fc5e93b7471b048"); */
 }
 
 #worldname {
@@ -37,7 +43,7 @@ body {
 }
 
 .menu button{
-    margin-top: 30px;
+    margin-top: 20px;
 
 }
 
@@ -60,4 +66,13 @@ span{
 
 .progress {
     padding : 0 0 !important;
+}
+
+toaster-container{
+    color: white;
+    font-size: 20px;
+}
+
+.modal-body {
+    padding: 0 !important;
 }

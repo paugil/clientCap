@@ -1,79 +1,255 @@
 <div class="container-fluid">
-<div class="row">
-<div class="col-md-5">
-<br>
-  <img class="round" [attr.src]="server+world.logo"/>
-  <span id="worldname">{{world.name}}</span>
-</div>
-<div class="col-md-3">
-<br>
-    <span id="worldmoney" [innerHTML]="world.money | bigvalue"></span>
-    <span> $ </span>
-</div>
-<div class="col-md-2">
-<br>
-    <button type="button" (click)="defQmulti()" class="btn btn-success" id="commutateur">{{ this.qtmulti }}</button>
-    <span>Your ID : </span>
-    <input type="text" [(ngModel)]="username" (change)="onUsernameChanged()"/>
-    
-  </div>
-</div>
-<div class="row">
-<div class="col-md-2 menu">
-    <button type="button" class="col-md-12 btn-lg btn-secondary" id="Unlocks">Unlocks</button>
-    <button type="button" class="col-md-12 btn-lg btn-secondary" id="Cash_Upgrades">Cash Upgrades</button>
-    <button type="button" class="col-md-12 btn-lg btn-secondary" id="Angels_Upgrades">Angels Upgrades</button>
-    <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="managersModal.show()" id="Managers"><span class="badge">{{badgeManager}}</span> Managers</button>
-    <button type="button" class="col-md-12 btn-lg btn-secondary" id="Investors">Investors</button>
-</div>
-<div class="col-md-10">
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[0]" id="product" class="col-md-6"></app-product>  
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[1]" id="product" class="col-md-6"></app-product>
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[2]" id="product" class="col-md-6"></app-product> 
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[3]" id="product" class="col-md-6"></app-product> 
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[4]" id="product" class="col-md-6"></app-product> 
-    <app-product (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)" (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money"
-    [prod]="world.products.product[5]" id="product" class="col-md-6"></app-product>   
-</div>
-</div>
-<app-modal #managersModal>
-    <div class="app-modal-header">
-    <h4 class="modal-title">Managers make you feel better !</h4>
-    </div>
-    <div class="app-modal-body">
-        <div class="col-xs-12" *ngFor="let manager of world.managers.pallier">
-            <div *ngIf="!manager.unlocked">
-                <div class="col-xs-4">
-                    <img class="round" [attr.src]="server+manager.logo"/>
-                </div>
-                <div class="col-xs-4">
-                    <h3>{{manager.name}}</h3>
-                    <p>{{world.products.product[(manager.idcible)-1].name}}</p>
-                    <p>{{manager.seuil}}$</p>
-                </div>
-                <div class="col-xs-4">
-
-                    <div *ngIf="manager.seuil<=world.money" >
-                        <button (click)="hireManager(manager)" type="button" class="btn btn-success btn-block"> Hire ! </button>
-                    </div>
-
-                    <div *ngIf="manager.seuil>world.money">
-                        <button disabled type="button" class="btn btn-success btn-block" > Hire ! </button>
-                    </div>
-
-                </div>
-            </div>
-    
+    <div class="row">
+        <div class="col-md-5">
+            <br>
+            <img class="round" [attr.src]="server+world.logo" />
+            <span id="worldname">{{world.name}}</span>
+        </div>
+        <div class="col-md-3">
+            <br>
+            <span id="worldmoney" [innerHTML]="world.money | bigvalue"></span>
+            <span> $ </span>
+        </div>
+        <div class="col-md-1">
+            <br> 
+            <button type="button" (click)="defQmulti()" class="btn btn-secondary btn-block" id="commutateur">Buy {{ this.qtmulti }}</button>
+        </div>
+        <div class="col-md-2">
+            <br> 
+            Your ID :
+            <input type="text" [(ngModel)]="username" (change)="onUsernameChanged()" />
         </div>
     </div>
-    <div class="app-modal-footer">
-    <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
+    <div class="row">
+        <div class="col-md-2 menu">
+            <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="unlocksModal.show()" id="Unlocks">
+                <span class="badge">{{badgeUnlocks}}</span>Unlocks</button>
+            <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="cashUpgradesModal.show()" id="Cash_Upgrades">
+                <span class="badge">{{badgeCashUpgrades}}</span>Cash Upgrades</button>
+            <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="angelsUpgradesModal.show()" id="Angels_Upgrades">
+                <span class="badge">{{badgeAngelsUpgrades}}</span>Angels Upgrades</button>
+            <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="managersModal.show()" id="Managers">
+                <span class="badge">{{badgeManagers}}</span> Managers</button>
+            <button type="button" class="col-md-12 btn-lg btn-secondary" data-toggle="modal" (click)="investorsModal.show()" id="Investors">Investors</button>
+        </div>
+        <div class="col-md-10">
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[0]"
+                id="product" class="col-md-5"></app-product>
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[1]"
+                id="product" class="col-md-5 col-md-offset-1"></app-product>
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[2]"
+                id="product" class="col-md-5"></app-product>
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[3]"
+                id="product" class="col-md-5 col-md-offset-1"></app-product>
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[4]"
+                id="product" class="col-md-5"></app-product>
+            <app-product (unlockProduct)="unlockByProduct($event)" (notifyProduct)="onBuyProduct($event)" (notifyAchat)="onBuyDone($event)"
+                (notifyProduction)="onProductionDone($event)" [qtmulti]="qtmulti" [worldMoney]="world.money" [prod]="world.products.product[5]"
+                id="product" class="col-md-5 col-md-offset-1"></app-product>
+        </div>
     </div>
-   </app-modal>
-   <toaster-container></toaster-container>
+    <app-modal #managersModal>
+        <div class="app-modal-header">
+            <h4 class="modal-title">Managers make you feel better !</h4>
+        </div>
+        <div class="app-modal-body">
+            <div class="col-xs-12" *ngFor="let manager of world.managers.pallier">
+                <div *ngIf="!manager.unlocked">
+                    <div class="col-xs-4">
+                        <img class="round" [attr.src]="server+manager.logo" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h3>{{manager.name}}</h3>
+                        <p>{{world.products.product[(manager.idcible)-1].name}}</p>
+                        <p>{{manager.seuil}}$</p>
+                    </div>
+                    <div class="col-xs-4">
+                        <div *ngIf="manager.seuil<=world.money">
+                            <button (click)="hireManager(manager)" type="button" class="btn btn-secondary btn-block"> Hire ! </button>
+                        </div>
+                        <div *ngIf="manager.seuil>world.money">
+                            <button disabled type="button" class="btn btn-secondary btn-block"> Hire ! </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="managersModal.hide()">Close</button>
+        </div>
+    </app-modal>
+
+    <app-modal #unlocksModal>
+        <div class="app-modal-header">
+            <h4 class="modal-title">Want to maximize profits ? Get your investments to these quotas !</h4>
+        </div>
+        <div class="app-modal-body">
+            <div class="col-xs-12" *ngFor="let unlock of unlocksProduct">
+                <div *ngIf="!unlock.unlocked">
+                    <div class="col-xs-4">
+                        <img class="round" [attr.src]="server+unlock.logo" />
+                    </div>
+                    <div class="col-xs-8">
+                        <h3>{{unlock.name}}</h3>
+                        <p>{{unlock.seuil}}</p>
+                        <div *ngIf="unlock.typeratio=='GAIN'">
+                            {{world.products.product[(unlock.idcible)-1].name}} PROFITS x{{unlock.ratio}}
+                        </div>
+                        <div *ngIf="unlock.typeratio=='VITESSE'">
+                            {{world.products.product[(unlock.idcible)-1].name}} SPEED x{{unlock.ratio}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" *ngFor="let unlock of world.allunlocks.pallier">
+                <div *ngIf="!unlock.unlocked">
+                    <div class="col-xs-4">
+                        <img class="round" [attr.src]="server+unlock.logo" />
+                    </div>
+                    <div class="col-xs-8">
+                        <h3>{{unlock.name}}</h3>
+                        <p>{{unlock.seuil}}</p>
+                        <div *ngIf="unlock.typeratio=='GAIN'">
+                            All Products PROFITS x{{unlock.ratio}}
+                        </div>
+                        <div *ngIf="unlock.typeratio=='VITESSE'">
+                            All Products SPEED x{{unlock.ratio}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="unlocksModal.hide()">Close</button>
+        </div>
+    </app-modal>
+
+    <app-modal #cashUpgradesModal>
+        <div class="app-modal-header">
+            <h4 class="modal-title">Boost your investments !</h4>
+        </div>
+        <div class="app-modal-body">
+            <div class="col-xs-12" *ngFor="let upgrade of world.upgrades.pallier">
+                <div *ngIf="!upgrade.unlocked">
+                    <div class="col-xs-4">
+                        <img class="round" [attr.src]="server+upgrade.logo" />
+                    </div>
+                    <div class="col-xs-5">
+                        <h3>{{upgrade.name}}</h3>
+                        <p>{{upgrade.seuil}}$</p>
+                        <div *ngIf="upgrade.typeratio=='GAIN'">
+                            <div *ngIf="upgrade.idcible==0">
+                                <p>All Products PROFITS x{{upgrade.ratio}}</p>
+                            </div>
+                            <div *ngIf="upgrade.idcible>0">
+                                <p>{{world.products.product[upgrade.idcible-1].name}} PROFITS x{{upgrade.ratio}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="upgrade.typeratio=='VITESSE'">
+                            <div *ngIf="upgrade.idcible==0">
+                                <p>All Products SPEED x{{upgrade.ratio}}</p>
+                            </div>
+                            <div *ngIf="upgrade.idcible>0">
+                                <p>{{world.products.product[upgrade.idcible-1].name}} SPEED x{{upgrade.ratio}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="upgrade.typeratio=='ANGE'">
+                            <p>Angel Effectiveness +{{upgrade.ratio}}%</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div *ngIf="upgrade.seuil<=world.money">
+                            <button (click)="buyUpgrade(upgrade)" type="button" class="btn btn-secondary btn-block"> Buy ! </button>
+                        </div>
+                        <div *ngIf="upgrade.seuil>world.money">
+                            <button disabled type="button" class="btn btn-secondary btn-block"> Buy ! </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="cashUpgradesModal.hide()">Close</button>
+        </div>
+    </app-modal>
+
+    <app-modal #angelsUpgradesModal>
+        <div class="app-modal-header">
+            <h4 class="modal-title">Spend your Angels Wisely !</h4>
+        </div>
+        <div class="app-modal-body">
+            <div class="col-xs-12" *ngFor="let angel of world.angelupgrades.pallier">
+                <div *ngIf="!angel.unlocked">
+                    <div class="col-xs-4">
+                        <img class="round" [attr.src]="server+angel.logo" />
+                    </div>
+                    <div class="col-xs-4">
+                        <h3>{{angel.name}}</h3>
+                        <p><b>{{angel.seuil}} Angels</b></p>
+                        <div *ngIf="angel.typeratio=='GAIN'">
+                            <div *ngIf="angel.idcible==0">
+                                <p>All Products PROFITS x{{angel.ratio}}</p>
+                            </div>
+                            <div *ngIf="angel.idcible>0">
+                                <p>{{world.products.product[angel.idcible-1].name}} PROFITS x{{angel.ratio}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="angel.typeratio=='VITESSE'">
+                            <div *ngIf="angel.idcible==0">
+                                <p>All Products SPEED x{{angel.ratio}}</p>
+                            </div>
+                            <div *ngIf="angel.idcible>0">
+                                <p>{{world.products.product[angel.idcible-1].name}} SPEED x{{angel.ratio}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="angel.typeratio=='ANGE'">
+                            <p>Angel Effectiveness +{{angel.ratio}}%</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div *ngIf="angel.seuil<=world.activeangels">
+                            <button (click)="buyAngel(angel)" type="button" class="btn btn-secondary btn-block"> Buy ! </button>
+                        </div>
+                        <div *ngIf="angel.seuil>world.activeangels">
+                            <button disabled type="button" class="btn btn-secondary btn-block"> Buy ! </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="angelsUpgradesModal.hide()">Close</button>
+        </div>
+    </app-modal>
+
+    <app-modal #investorsModal>
+        <div class="app-modal-header">
+            <h4 class="modal-title">Angel Investors !</h4>
+        </div>
+        <div class="app-modal-body">
+            <div class="col-xs-12">
+                <br>
+                <br>
+                <div class="col-xs-4">
+                    <p>{{world.activeangels}} Total Angels</p>
+                    <p>2% Bonus Per Angels</p>
+                </div>
+                <div class="col-xs-8">
+                    <p>{{nbAngels}} angels</p>
+                </div>
+                <button type="button" class="btn btn-warning" (click)="restartWorld()">To Claim with Restart</button>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="investorsModal.hide()">Close</button>
+        </div>
+    </app-modal>
+
+    <toaster-container></toaster-container>
 </div>

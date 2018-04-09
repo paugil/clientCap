@@ -54,22 +54,23 @@ export class RestserviceService {
     return this.http.put(this.server + "webresources/generic/product", product, {headers: this.setHeaders(this.user)})
     .toPromise();
   }
+
   putAngel(angel : Pallier) : Promise<Response> {
     console.log("put angel");
     console.log(angel);
     return this.http.put(this.server + "webresources/generic/angel", angel, {headers: this.setHeaders(this.user)})
     .toPromise();
   }
+
   putUpgrade(upgrade : Pallier) : Promise<Response> {
     console.log("put upgrade");
     console.log(upgrade);
     return this.http.put(this.server + "webresources/generic/upgrade", upgrade, {headers: this.setHeaders(this.user)})
     .toPromise();
   }
-  putReset (world : World) : Promise<Response> {
-    console.log("put reset");
-    console.log(world);
-    return this.http.put(this.server + "webresources/generic/reset", world, {headers: this.setHeaders(this.user)})
+
+  Reset (world : World) : Promise<Response> {
+    return this.http.delete(this.server + "webresources/generic/reset", {headers: this.setHeaders(this.user)})
     .toPromise();
   }
   

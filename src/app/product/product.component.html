@@ -13,15 +13,15 @@
         <div class="col-md-8 col-md-offset-4" style="z-index:1; position:absolute; text-align:center">{{product?.revenu*product?.quantite}}</div>
         <div class="col-md-5">
         <div *ngIf="coutProduct<=money && qMax>0" >
-                    <button (click)="onBuy()"  type="button" class="btn btn-success btn-block" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
+                    <button (click)="onBuy()"  type="button" class="btn btn-secondary" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
             </div>
             <div *ngIf="coutProduct>money || qMax==0" >
-                    <button (click)="onBuy()" disabled type="button" class="btn btn-success btn-block" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
+                    <button (click)="onBuy()" disabled type="button" class="btn btn-secondary" id="multiplication" [innerHTML]="'x' + qMax + ' | ' +  (coutProduct | bigvalue) + '$'"></button>
             </div>
          
          </div>
 
-        <div class="col-md-3" id="timeleft" > {{ product?.timeleft | date:'mm:ss' }} </div>
+        <div class="col-md-3" id="timeleft" ><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ product?.timeleft | date:'mm:ss' }} </div>
 
         </div>
     </div>

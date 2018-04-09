@@ -25,21 +25,39 @@ export class ProductComponent implements OnInit {
   lastupdate: any
   coutProduct = 0;
   _qtmulti: string;
+  unlockUnlocked = [];
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
   @Output() notifyProduct: EventEmitter<Product> = new EventEmitter<Product>();
+  @Output() unlockProduct: EventEmitter<any> = new EventEmitter();
+
+  // @Input()
+  // set prod(value: Product) {
+  //   this.product = value;
+  //   if (this.product && this.product.timeleft > 0) {
+  //     this.lastupdate = Date.now();
+  //     let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+  //     this.progressbar.set(progress);
+  //     this.coutProduct = this.product.cout
+  //     this.progressbar.animate(1, { duration: this.product.timeleft });
+  //   }
+
+  // }
 
   @Input()
   set prod(value: Product) {
     this.product = value;
+    this.checkUnlocks();
     if (this.product && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
-      let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      let progress = (this.product.vitesse - this.product.timeleft) /
+        this.product.vitesse;
       this.progressbar.set(progress);
-      this.coutProduct = this.product.cout
       this.progressbar.animate(1, { duration: this.product.timeleft });
+      
     }
+    
   }
 
   @Input()
@@ -53,7 +71,7 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.progressbar = new this.ProgressBar.Line(this.progressBarItem.nativeElement, { strokeWidth: 100, color: 'green' });
+    this.progressbar = new this.ProgressBar.Line(this.progressBarItem.nativeElement, { strokeWidth: 100, color: '#cccccc' });
     setInterval(() => { this.calcScore(); }, 100);
   }
 
@@ -63,7 +81,7 @@ export class ProductComponent implements OnInit {
         this.product.timeleft = this.product.vitesse;
         this.lastupdate = Date.now(); //instant de démarrage de la prod
         this.progressbar.animate(1, { duration: this.product.vitesse });
-        
+
       }
     }
   }
@@ -80,11 +98,16 @@ export class ProductComponent implements OnInit {
       this.product.quantite += this.qMax;
     this.notifyAchat.emit(this.coutProduct);
     this.notifyProduct.emit(this.product);
+  }
 
+  checkUnlocks() {
+    this.product.palliers.pallier.forEach(unlock => {
+      this.unlockUnlocked.push(unlock);
+    })
+    this.unlockProduct.emit(this.unlockUnlocked);
   }
 
   calcScore(): any {
-
     if (this.product.timeleft != 0) {
       this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
       this.lastupdate = Date.now();

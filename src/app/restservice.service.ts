@@ -69,10 +69,9 @@ export class RestserviceService {
     .toPromise();
   }
 
-  Reset (world : World) : Promise<Response> {
-    return this.http.delete(this.server + "webresources/generic/reset", {headers: this.setHeaders(this.user)})
-    .toPromise();
+  Reset (): Promise<World> {
+    return this.http.delete(this.server + "webresources/generic/world", {headers: this.setHeaders(this.user)})
+    .toPromise().then(response =>response.json()).catch(this.handleError);;
   }
-  
 
 }

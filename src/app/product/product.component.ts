@@ -27,7 +27,7 @@ export class ProductComponent implements OnInit {
   _qtmulti: string;
   unlockUnlocked = [];
   vitesseIni: number;
-
+  restService=null;
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyAchat: EventEmitter<Number> = new EventEmitter<Number>();
   @Output() notifyProduct: EventEmitter<Product> = new EventEmitter<Product>();
@@ -55,6 +55,7 @@ export class ProductComponent implements OnInit {
 
   constructor(private service: RestserviceService) {
     this.url = service.getServer();
+    this.restService = service;
   }
 
   ngOnInit() {
@@ -63,8 +64,11 @@ export class ProductComponent implements OnInit {
   }
 
   startFabrication() {
+    
     if (this.product.timeleft == 0) {
+      
       if (this.product.quantite >= 1) {
+        this.restService.putProduct(this.product);
         this.product.timeleft = this.product.vitesse;
         this.lastupdate = Date.now(); //instant de démarrage de la prod
         this.progressbar.animate(1, { duration: this.product.vitesse });
@@ -132,11 +136,11 @@ export class ProductComponent implements OnInit {
         this.qMax = 1;
       };
       if (this._qtmulti === "x10") {
-        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (10 + 1)) / (1 - this.product.croissance))
+        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** 10) / (1 - this.product.croissance))
         this.qMax = 10;
       };
       if (this._qtmulti === "x100") {
-        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** (100 + 1)) / (1 - this.product.croissance))
+        this.coutProduct = this.product.cout * ((1 - this.product.croissance ** 100) / (1 - this.product.croissance))
         this.qMax = 100;
       };
       if (this._qtmulti === "xMax") {

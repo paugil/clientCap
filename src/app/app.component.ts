@@ -31,18 +31,22 @@ export class AppComponent {
   bonusvitesse = [];
 
   constructor(private service: RestserviceService, private toasterService : ToasterService) {
+    
+    if(localStorage.getItem("username")){
+      this.username = localStorage.getItem("username")
+    }else{
+      this.username = "France" + Math.floor(Math.random() * 10000);
+    } 
+   
     this.serviceRest = service;
+    this.serviceRest.setUser(this.username);
     this.server = service.getServer();
-    service.getWorld().then(world => { 
+    service.getWorld().then(world => {
       this.world = world;
       this.tService = toasterService;
       this.viewBadge();
       this.calcNbAnge();
-      if(localStorage.getItem("username")){
-        this.username = localStorage.getItem("username")
-      }else{
-        this.username = "France" + Math.floor(Math.random() * 10000);
-      } 
+     
     });
   }
   
@@ -51,7 +55,6 @@ export class AppComponent {
     this.world.score += (p.revenu)*(p.quantite);
     this.viewBadge();
     this.calcNbAnge()
-    // this.service.putProduct(p);
   }
 
   onBuyDone(n : number){
@@ -62,7 +65,7 @@ export class AppComponent {
   }
   
   onBuyProduct(p: Product){
-    // this.service.putProduct(p);
+    this.service.putProduct(p);
     this.checkUnlocks();
   }
 
@@ -78,7 +81,7 @@ export class AppComponent {
     this.world.products.product[(manager.idcible)-1].managerUnlocked = true;
     this.tService.pop('success', 'Manager hired !', manager.name);
     this.viewBadge();
-    // this.service.putManager(manager);
+    this.service.putManager(manager);
   }
  
   buyUpgrade(upgrade : Pallier){
@@ -107,7 +110,7 @@ export class AppComponent {
     }
     this.tService.pop('success', 'Upgrade buy !', upgrade.name);
     this.viewBadge();
-    // this.service.putUpgrade(upgrade);    
+    this.service.putUpgrade(upgrade);    
   };
 
   buyAngel(angel : Pallier){
@@ -136,7 +139,7 @@ export class AppComponent {
     }
     this.tService.pop('success', 'Angel buy !', angel.name);
     this.viewBadge();
-    // this.service.putAngel(angel);    
+    this.service.putAngel(angel);    
   }
 
   checkUnlocks(){
@@ -146,8 +149,9 @@ export class AppComponent {
       counter = 0;
       this.world.products.product.forEach(prod => {
         if (prod.quantite>=unlock.seuil){
-          counter = +1
+          counter = counter +1
         }
+        console.log(counter)
         if(counter==6){
           unlockUnlocked.push(unlock);  
           if(unlock.typeratio=='GAIN'){        
@@ -219,8 +223,10 @@ export class AppComponent {
   }
 
   restartWorld(){
-    // this.world = this.serviceRest.getWorld();
-    // window.location.reload();
+    this.serviceRest.Reset().then(world => {
+      this.world = world;
+    });
+    window.location.reload();
   }
  
 }
